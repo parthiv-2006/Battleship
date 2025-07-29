@@ -1,6 +1,7 @@
 {
   "name": "battleship",
   "version": "1.0.0",
+  "type": "module",
   "private": true,
   "description": "A classic Battleship computer game",
   "main": "index.js",
@@ -9,11 +10,14 @@
     "build": "webpack --config webpack.prod.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "test": "jest",
+    "watch": "jest --watch *.js"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.7",
-    "@babel/preset-env": "^7.24.7",
+    "@babel/core": "^7.28.0",
+    "@babel/preset-env": "^7.28.0",
+    "babel-jest": "^30.0.5",
     "babel-loader": "^9.1.3",
     "css-loader": "^7.1.2",
     "eslint": "^8.57.0",
@@ -22,6 +26,7 @@
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-prettier": "^5.1.3",
     "html-webpack-plugin": "^5.6.0",
+    "jest": "^30.0.5",
     "mini-css-extract-plugin": "^2.9.0",
     "prettier": "3.3.2",
     "style-loader": "^4.0.0",
