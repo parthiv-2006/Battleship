@@ -1,8 +1,8 @@
 {
-  "name": "webpack-template",
+  "name": "battleship",
   "version": "1.0.0",
   "private": true,
-  "description": "A modern Webpack 5 project template.",
+  "description": "A classic Battleship computer game",
   "main": "index.js",
   "scripts": {
     "start": "webpack serve --open --config webpack.dev.js",
