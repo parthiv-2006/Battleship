@@ -1,10 +1,17 @@
+import { Ship, Gameboard, Player } from './index.js';
+
 class EventListeners {
-  constructor(player, computer) {
+  constructor() {
     this.computerBoard = document.querySelector('#computer-board');
-    this.playerBoard = document.querySelector('#player-board');
-    this.player = player
-    this.computer = computer
+    this.playerBoard = document.querySelector('#player-board')
     this.isGameOver = false
+    this.playButton = document.querySelector('#play-button')
+
+    this.playButton.addEventListener('click', () => {
+      this.computerBoard.classList.remove('hide')
+      this.playerBoard.classList.remove('hide')
+      this.setupGame()
+    })
 
     this.computerBoard.addEventListener('click', (event) => {
       if (this.isGameOver || !event.target.classList.contains('cell')) {
@@ -14,6 +21,33 @@ class EventListeners {
       const y = parseInt(event.target.dataset.y);
       this.runGame(x, y);
     });
+  }
+
+  setupGame() {
+    this.player = new Player('Human')
+    this.computer = new Player('Computer')
+    
+    const shipLengths = [5, 4, 3, 2, 1]
+
+    this.setShipsRandomly(this.player, shipLengths)
+    this.setShipsRandomly(this.computer, shipLengths)
+
+    renderBoard(this.player.gameboard, this.playerBoard)
+    renderBoard(this.computer.gameboard, this.computerBoard)
+  }
+
+  setShipsRandomly(player, shipLengths) {
+    shipLengths.forEach((length) => {
+      let placed = false
+      while (!placed) {
+        const x = Math.floor(Math.random() * 10)
+        const y = Math.floor(Math.random() * 10)
+        const isHorizontal = Math.random() < 0.5
+        const newShip = new Ship(length)
+        placed = player.gameboard.placeShip(newShip, x, y, isHorizontal)
+      }
+    })
+
   }
 
   runGame(x, y) {
@@ -26,6 +60,8 @@ class EventListeners {
     if (this.computer.gameboard.allShipsSunk()) {
       alert('You Win!')
       this.isGameOver = true
+      this.computerBoard.classList.add('hide')
+      this.playerBoard.classList.add('hide')
       return
     }
   
@@ -37,6 +73,8 @@ class EventListeners {
       if (this.player.gameboard.allShipsSunk()) {
         alert('You Lose!')
         this.isGameOver = true
+        this.computerBoard.classList.add('hide');
+        this.playerBoard.classList.add('hide');
         return
       }
     }, 500)
