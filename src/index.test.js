@@ -1,4 +1,4 @@
-import {Ship, Gameboard} from './index.js';
+import {Ship, Gameboard, Player} from './index.js';
 
 
 test('Creates a ship object', () => {
@@ -124,3 +124,18 @@ test('reports when all ships are not sunk', () => {
   expect(gameboard.allShipsSunk()).toBe(false);
 });
 
+test('player is created', () => {
+  const player = new Player('human')
+  expect(player.typePlayer).toBe('human')
+})
+
+test('player attacks', () => {
+  const player = new Player('human')
+  const enemyGameboard = new Gameboard()
+  const ship = new Ship(1)
+  enemyGameboard.placeShip(ship, 0, 0, true)
+  player.attack(enemyGameboard, 0, 0)
+  expect(enemyGameboard.board[0][0]).toBe('hit')
+  player.attack(enemyGameboard, 0, 1)
+  expect(enemyGameboard.board[1][0]).toBe('miss')
+})
