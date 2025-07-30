@@ -7,7 +7,7 @@ class Ship {
 
   hit() {
     this.numHit++;
-    this.isSunk()
+    this.isSunk();
   }
 
   isSunk() {
@@ -18,23 +18,49 @@ class Ship {
 }
 
 class Gameboard {
-  constructor () {
-    this.board = this.createBoard()
+  constructor() {
+    this.board = this.createBoard();
   }
 
   createBoard() {
-    const board = [] // 10 x 10 gameboard
-    const rowSize = 10
+    const board = []; // 10 x 10 gameboard
+    const rowSize = 10;
 
     for (let i = 0; i < rowSize; i++) {
-      board.push(new Array(rowSize).fill(null))
+      board.push(new Array(rowSize).fill(null));
     }
-    return board
+    return board;
   }
 
+  placeShip(ship, x, y, isHorizontal = true) {
+    if (isHorizontal && ship.length + x > 10) {
+      return false;
+    }
+    if (!isHorizontal && ship.length + y > 10) {
+      return false;
+    }
 
+    for (let i = 0; i < ship.length; i++) {
+      if (isHorizontal) {
+        if (this.board[y][x + i] !== null) {
+          return false;
+        }
+      } else {
+        if (this.board[y + i][x] !== null) {
+          return false;
+        }
+      }
+    }
+
+    for (let i = 0; i < ship.length; i++) {
+      if (isHorizontal) {
+        this.board[y][x + i] = ship;
+      } else {
+        this.board[y + i][x] = ship;
+      }
+    }
+    return true;
+  }
 }
 
-export {Ship, Gameboard}
-
-
+export { Ship, Gameboard };
