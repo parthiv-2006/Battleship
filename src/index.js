@@ -6,7 +6,6 @@ class Ship {
 
   hit() {
     this.numHit++;
-    this.isSunk();
   }
 
   isSunk() {
@@ -17,7 +16,7 @@ class Ship {
 class Gameboard {
   constructor() {
     this.board = this.createBoard();
-    this.ships = []
+    this.ships = [];
   }
 
   createBoard() {
@@ -66,21 +65,44 @@ class Gameboard {
 
     if (cell === null) {
       this.board[y][x] = 'miss';
-      return false; 
+      return false;
     }
 
     if (typeof cell === 'object') {
       cell.hit();
       this.board[y][x] = 'hit';
-      return true; 
+      return true;
     }
- 
-    return false; 
+
+    return false;
   }
 
   allShipsSunk() {
-    return this.ships.every(ship => ship.isSunk());
+    return this.ships.every((ship) => ship.isSunk());
   }
 }
 
-export { Ship, Gameboard };
+class Player {
+  constructor(typePlayer) {
+    this.typePlayer = typePlayer;
+    this.gameboard = new Gameboard();
+  }
+
+  attack(enemyGameboard, x, y) {
+    return enemyGameboard.receiveAttack(x, y);
+  }
+
+  takeRandomTurn(enemyGameboard) {
+    let x;
+    let y;
+
+    do {
+      x = Math.floor(Math.random() * 10);
+      y = Math.floor(Math.random() * 10);
+    } while (enemyGameboard.board[y][x] !== null);
+
+    return this.attack(enemyGameboard, x, y);
+  }
+}
+
+export { Ship, Gameboard, Player };
