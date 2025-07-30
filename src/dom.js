@@ -4,19 +4,45 @@ class EventListeners {
     this.playerBoard = document.querySelector('#player-board');
     this.player = player
     this.computer = computer
+    this.isGameOver = false
 
     this.computerBoard.addEventListener('click', (event) => {
+      if (this.isGameOver || !event.target.classList.contains('cell')) {
+        return;
+      }
       const x = parseInt(event.target.dataset.x);
       const y = parseInt(event.target.dataset.y);
-
-      if (!isNaN(x) && !isNaN(y)) {
-        this.player.attack(computer.gameboard, x, y);
-        renderBoard(player.gameboard, this.playerBoard);
-        renderBoard(computer.gameboard, this.computerBoard);
-      }
+      this.runGame(x, y);
     });
   }
+
+  runGame(x, y) {
+
+    if (isNaN(x) || isNaN(y)) {return}
+  
+    this.player.attack(this.computer.gameboard, x, y)
+    renderBoard(this.computer.gameboard, this.computerBoard)
+  
+    if (this.computer.gameboard.allShipsSunk()) {
+      alert('You Win!')
+      this.isGameOver = true
+      return
+    }
+  
+    // computer turn
+  
+    setTimeout(() => {
+      this.computer.takeRandomTurn(this.player.gameboard)
+      renderBoard(this.player.gameboard, this.playerBoard)
+      if (this.player.gameboard.allShipsSunk()) {
+        alert('You Lose!')
+        this.isGameOver = true
+        return
+      }
+    }, 500)
+  }
 }
+
 
 
 
