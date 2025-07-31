@@ -7,6 +7,7 @@ class EventListeners {
     this.playButton = document.querySelector('#play-button');
     this.restartButton = document.querySelector('#restart-button');
     this.swapBoardButton = document.querySelector('#swap-button');
+    this.displayMessage = document.querySelector('.display-message')
 
     this.swapBoardButton.addEventListener('click', () => {
       this.setupGame()
@@ -14,6 +15,13 @@ class EventListeners {
       
 
     this.playButton.addEventListener('click', () => {
+      if (this.displayMessage.classList.contains('winner')) {
+        this.displayMessage.classList.remove('winner')
+      }
+      if (this.displayMessage.classList.contains('loser')) {
+        this.displayMessage.classList.remove('loser')
+      }
+      this.displayMessage.textContent = 'Select a coordinate on the enemy grid to fire'
       this.playButton.classList.add('hide');
       this.restartButton.classList.remove('hide');
       this.swapBoardButton.classList.remove('hide');
@@ -77,7 +85,8 @@ class EventListeners {
     renderBoard(this.computer.gameboard, this.computerBoard);
 
     if (this.computer.gameboard.allShipsSunk()) {
-      alert('You Win!');
+      this.displayMessage.textContent = 'You Win!'
+      this.displayMessage.classList.add('winner')
       this.computerBoard.classList.add('hide');
       this.playerBoard.classList.add('hide');
       this.restartButton.classList.add('hide');
@@ -92,7 +101,8 @@ class EventListeners {
       this.computer.takeTurnComputer(this.player.gameboard);
       renderBoard(this.player.gameboard, this.playerBoard);
       if (this.player.gameboard.allShipsSunk()) {
-        alert('You Lose!');
+        this.displayMessage.textContent = 'You Lose!';
+        this.displayMessage.classList.add('loser');
         this.computerBoard.classList.add('hide');
         this.playerBoard.classList.add('hide');
         this.restartButton.classList.add('hide');
