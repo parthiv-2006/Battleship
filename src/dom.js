@@ -69,13 +69,14 @@ class EventListeners {
       this.playerBoard.classList.add('hide')
       this.restartButton.classList.add('hide')
       this.playButton.classList.remove('hide')
+      this.playButton.innerHTML = 'Play Again';
       return
     }
   
     // computer turn
   
     setTimeout(() => {
-      this.computer.takeRandomTurn(this.player.gameboard)
+      this.computer.takeTurnComputer(this.player.gameboard)
       renderBoard(this.player.gameboard, this.playerBoard)
       if (this.player.gameboard.allShipsSunk()) {
         alert('You Lose!')
@@ -83,6 +84,7 @@ class EventListeners {
         this.playerBoard.classList.add('hide');
         this.restartButton.classList.add('hide');
         this.playButton.classList.remove('hide');
+        this.playButton.innerHTML = 'Play Again'
         return
       }
     }, 500)
