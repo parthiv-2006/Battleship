@@ -4,17 +4,23 @@ class EventListeners {
   constructor() {
     this.computerBoard = document.querySelector('#computer-board');
     this.playerBoard = document.querySelector('#player-board')
-    this.isGameOver = false
     this.playButton = document.querySelector('#play-button')
+    this.restartButton = document.querySelector('#restart-button')
 
     this.playButton.addEventListener('click', () => {
+      this.playButton.classList.add('hide')
+      this.restartButton.classList.remove('hide')
       this.computerBoard.classList.remove('hide')
       this.playerBoard.classList.remove('hide')
       this.setupGame()
     })
 
+    this.restartButton.addEventListener('click', () => {
+      this.setupGame()
+    })
+
     this.computerBoard.addEventListener('click', (event) => {
-      if (this.isGameOver || !event.target.classList.contains('cell')) {
+      if (!event.target.classList.contains('cell')) {
         return;
       }
       const x = parseInt(event.target.dataset.x);
@@ -59,9 +65,10 @@ class EventListeners {
   
     if (this.computer.gameboard.allShipsSunk()) {
       alert('You Win!')
-      this.isGameOver = true
       this.computerBoard.classList.add('hide')
       this.playerBoard.classList.add('hide')
+      this.restartButton.classList.add('hide')
+      this.playButton.classList.remove('hide')
       return
     }
   
@@ -72,9 +79,10 @@ class EventListeners {
       renderBoard(this.player.gameboard, this.playerBoard)
       if (this.player.gameboard.allShipsSunk()) {
         alert('You Lose!')
-        this.isGameOver = true
         this.computerBoard.classList.add('hide');
         this.playerBoard.classList.add('hide');
+        this.restartButton.classList.add('hide');
+        this.playButton.classList.remove('hide');
         return
       }
     }, 500)
