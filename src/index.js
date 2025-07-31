@@ -74,7 +74,7 @@ class Gameboard {
     if (typeof cell === 'object') {
       cell.hit();
       this.board[y][x] = 'hit';
-      return true;
+      return cell;
     }
 
     return false;
@@ -89,25 +89,68 @@ class Player {
   constructor(typePlayer) {
     this.typePlayer = typePlayer;
     this.gameboard = new Gameboard();
+
+    if (this.typePlayer === 'Computer') {
+      this.isHunting = true;
+      this.targetQueue = [];
+    }
+  }
+  getValidAdjacentSquares(x, y, gameboard) {
+    const adjacentSquares = [];
+    if (y > 0) {
+      adjacentSquares.push([x, y - 1]);
+    }
+    if (y < 9) {
+      adjacentSquares.push([x, y + 1]);
+    }
+    if (x > 0) {
+      adjacentSquares.push([x - 1, y]);
+    }
+    if (x < 9) {
+      adjacentSquares.push([x + 1, y]);
+    }
+    return adjacentSquares.filter(([adjX, adjY]) => {
+      const cell = gameboard.board[adjY][adjX];
+      return cell !== 'miss' && cell !== 'hit';
+    });
   }
 
   attack(enemyGameboard, x, y) {
     return enemyGameboard.receiveAttack(x, y);
   }
 
-  takeRandomTurn(enemyGameboard) {
-    let x;
-    let y;
-
-    do {
-      x = Math.floor(Math.random() * 10);
-      y = Math.floor(Math.random() * 10);
-    } while (
-      enemyGameboard.board[y][x] === 'miss' ||
-      enemyGameboard.board[y][x] === 'hit'
-    );
-
-    return this.attack(enemyGameboard, x, y);
+  takeTurnComputer(enemyGameboard) {
+    if (this.isHunting) {
+      let x;
+      let y;
+      do {
+        x = Math.floor(Math.random() * 10);
+        y = Math.floor(Math.random() * 10);
+      } while (
+        enemyGameboard.board[y][x] === 'miss' ||
+        enemyGameboard.board[y][x] === 'hit'
+      );
+      const hitResult = this.attack(enemyGameboard, x, y);
+      if (hitResult) {
+        this.isHunting = false;
+        this.targetQueue = this.getValidAdjacentSquares(x, y, enemyGameboard);
+      }
+    } else {
+      if (this.targetQueue.length === 0) {
+        this.isHunting = true;
+        this.takeTurnComputer(enemyGameboard);
+        return;
+      }
+      const [x, y] = this.targetQueue.shift();
+      const hitResult = this.attack(enemyGameboard, x, y);
+      if (hitResult) {
+        const hitShip = hitResult;
+        if (hitShip.isSunk()) {
+          this.isHunting = true;
+          this.targetQueue = [];
+        }
+      }
+    }
   }
 }
 
