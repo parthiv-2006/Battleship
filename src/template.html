@@ -4,14 +4,26 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
   </head>
   <body>
     <div class="header">
-      <h1>Battleship</h1>
-      <button id="play-button">Play</button>
-      <button id="restart-button" class="hide">Restart</button>
+      <div class="header-text">
+        <h1>BATTLESHIP</h1>
+        <p>THE TACTICAL NAVAL COMBAT GAME</p>
+      </div>
+      <div class="header-info">
+        <p>Select a coordinate on the enemy grid to fire.</p>
+        <div class="header-buttons">
+        <button id="play-button">Play</button>
+        <button id="restart-button" class="hide">Restart</button>
+        <button id="swap-button" class="hide">Swap Board</button>
+        </div>
+      </div>
     </div>
-    <button id="swap-button" class="hide">Swap Board</button>
+
     <div id="board-container">
       <div id="player-board" class="board hide"></div>
       <div id="computer-board" class="board hide"></div>
