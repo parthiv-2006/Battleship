@@ -6,16 +6,24 @@ class EventListeners {
     this.playerBoard = document.querySelector('#player-board');
     this.playButton = document.querySelector('#play-button');
     this.restartButton = document.querySelector('#restart-button');
+    this.swapBoardButton = document.querySelector('#swap-button');
+
+    this.swapBoardButton.addEventListener('click', () => {
+      this.setupGame()
+    })
+      
 
     this.playButton.addEventListener('click', () => {
       this.playButton.classList.add('hide');
       this.restartButton.classList.remove('hide');
+      this.swapBoardButton.classList.remove('hide');
       this.computerBoard.classList.remove('hide');
       this.playerBoard.classList.remove('hide');
       this.setupGame();
     });
 
     this.restartButton.addEventListener('click', () => {
+      this.swapBoardButton.classList.remove('hide')
       this.player.gameboard.reset()
       this.computer.gameboard.reset()
       renderBoard(this.player.gameboard, this.playerBoard);
@@ -63,6 +71,7 @@ class EventListeners {
     if (isNaN(x) || isNaN(y)) {
       return;
     }
+    this.swapBoardButton.classList.add('hide')
 
     this.player.attack(this.computer.gameboard, x, y);
     renderBoard(this.computer.gameboard, this.computerBoard);
