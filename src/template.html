@@ -15,7 +15,7 @@
         <p>THE TACTICAL NAVAL COMBAT GAME</p>
       </div>
       <div class="header-info">
-        <p>Select a coordinate on the enemy grid to fire.</p>
+        <p class="display-message">Click Play To Start</p>
         <div class="header-buttons">
         <button id="play-button">Play</button>
         <button id="restart-button" class="hide">Restart</button>
@@ -25,8 +25,14 @@
     </div>
 
     <div id="board-container">
-      <div id="player-board" class="board hide"></div>
-      <div id="computer-board" class="board hide"></div>
+      <div class="player-fleet">
+        <p>Your Fleet</p>
+        <div id="player-board" class="board hide"></div>
+      </div>
+      <div class="enemy-fleet">
+        <p>Enemy Fleet</p>
+        <div id="computer-board" class="board hide"></div>
+      </div>
     </div>
   </body>
 </html>
