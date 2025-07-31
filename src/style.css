@@ -182,3 +182,19 @@ body {
     transform: scale(0.95);
     transition: all 0.1s ease-in-out;
 }
+
+.display-message.winner {
+    color: green;
+    font-weight: bold;
+    font-size: 2rem;
+    margin-bottom: 0;
+    padding-bottom: 10px;
+}
+
+.display-message.loser {
+    color: red;
+    font-weight: bold;
+    font-size: 2rem;
+    margin-bottom: 0;
+    padding-bottom: 10px;
+}
