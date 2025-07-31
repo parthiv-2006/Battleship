@@ -1,3 +1,6 @@
+import { renderBoard, EventListeners } from './dom.js';
+import './style.css';
+
 class Ship {
   constructor(length) {
     this.length = length;
@@ -99,10 +102,15 @@ class Player {
     do {
       x = Math.floor(Math.random() * 10);
       y = Math.floor(Math.random() * 10);
-    } while (enemyGameboard.board[y][x] !== null);
+    } while (
+      enemyGameboard.board[y][x] === 'miss' ||
+      enemyGameboard.board[y][x] === 'hit'
+    );
 
     return this.attack(enemyGameboard, x, y);
   }
 }
 
 export { Ship, Gameboard, Player };
+
+new EventListeners();
