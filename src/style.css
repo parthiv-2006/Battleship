@@ -20,7 +20,7 @@
 }
 
 #player-board .ship {
-    background-color:#808080;
+    background-color: blue;
 }
 
 .miss {
@@ -59,3 +59,10 @@
     cursor: pointer;
     background-color: aliceblue;
 }
+
+.hide {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: default;
+}
+
