@@ -3,21 +3,24 @@ import { Ship, Gameboard, Player } from './index.js';
 class EventListeners {
   constructor() {
     this.computerBoard = document.querySelector('#computer-board');
-    this.playerBoard = document.querySelector('#player-board')
-    this.playButton = document.querySelector('#play-button')
-    this.restartButton = document.querySelector('#restart-button')
+    this.playerBoard = document.querySelector('#player-board');
+    this.playButton = document.querySelector('#play-button');
+    this.restartButton = document.querySelector('#restart-button');
 
     this.playButton.addEventListener('click', () => {
-      this.playButton.classList.add('hide')
-      this.restartButton.classList.remove('hide')
-      this.computerBoard.classList.remove('hide')
-      this.playerBoard.classList.remove('hide')
-      this.setupGame()
-    })
+      this.playButton.classList.add('hide');
+      this.restartButton.classList.remove('hide');
+      this.computerBoard.classList.remove('hide');
+      this.playerBoard.classList.remove('hide');
+      this.setupGame();
+    });
 
     this.restartButton.addEventListener('click', () => {
-      this.setupGame()
-    })
+      this.player.gameboard.reset()
+      this.computer.gameboard.reset()
+      renderBoard(this.player.gameboard, this.playerBoard);
+      renderBoard(this.computer.gameboard, this.computerBoard);
+    });
 
     this.computerBoard.addEventListener('click', (event) => {
       if (!event.target.classList.contains('cell')) {
@@ -29,70 +32,68 @@ class EventListeners {
     });
   }
 
+
   setupGame() {
-    this.player = new Player('Human')
-    this.computer = new Player('Computer')
-    
-    const shipLengths = [5, 4, 3, 2, 1]
+    this.player = new Player('Human');
+    this.computer = new Player('Computer');
 
-    this.setShipsRandomly(this.player, shipLengths)
-    this.setShipsRandomly(this.computer, shipLengths)
+    const shipLengths = [5, 4, 3, 2, 1];
 
-    renderBoard(this.player.gameboard, this.playerBoard)
-    renderBoard(this.computer.gameboard, this.computerBoard)
+    this.setShipsRandomly(this.player, shipLengths);
+    this.setShipsRandomly(this.computer, shipLengths);
+
+    renderBoard(this.player.gameboard, this.playerBoard);
+    renderBoard(this.computer.gameboard, this.computerBoard);
   }
 
   setShipsRandomly(player, shipLengths) {
     shipLengths.forEach((length) => {
-      let placed = false
+      let placed = false;
       while (!placed) {
-        const x = Math.floor(Math.random() * 10)
-        const y = Math.floor(Math.random() * 10)
-        const isHorizontal = Math.random() < 0.5
-        const newShip = new Ship(length)
-        placed = player.gameboard.placeShip(newShip, x, y, isHorizontal)
+        const x = Math.floor(Math.random() * 10);
+        const y = Math.floor(Math.random() * 10);
+        const isHorizontal = Math.random() < 0.5;
+        const newShip = new Ship(length);
+        placed = player.gameboard.placeShip(newShip, x, y, isHorizontal);
       }
-    })
-
+    });
   }
 
   runGame(x, y) {
-
-    if (isNaN(x) || isNaN(y)) {return}
-  
-    this.player.attack(this.computer.gameboard, x, y)
-    renderBoard(this.computer.gameboard, this.computerBoard)
-  
-    if (this.computer.gameboard.allShipsSunk()) {
-      alert('You Win!')
-      this.computerBoard.classList.add('hide')
-      this.playerBoard.classList.add('hide')
-      this.restartButton.classList.add('hide')
-      this.playButton.classList.remove('hide')
-      this.playButton.innerHTML = 'Play Again';
-      return
+    if (isNaN(x) || isNaN(y)) {
+      return;
     }
-  
+
+    this.player.attack(this.computer.gameboard, x, y);
+    renderBoard(this.computer.gameboard, this.computerBoard);
+
+    if (this.computer.gameboard.allShipsSunk()) {
+      alert('You Win!');
+      this.computerBoard.classList.add('hide');
+      this.playerBoard.classList.add('hide');
+      this.restartButton.classList.add('hide');
+      this.playButton.classList.remove('hide');
+      this.playButton.innerHTML = 'Play Again';
+      return;
+    }
+
     // computer turn
-  
+
     setTimeout(() => {
-      this.computer.takeTurnComputer(this.player.gameboard)
-      renderBoard(this.player.gameboard, this.playerBoard)
+      this.computer.takeTurnComputer(this.player.gameboard);
+      renderBoard(this.player.gameboard, this.playerBoard);
       if (this.player.gameboard.allShipsSunk()) {
-        alert('You Lose!')
+        alert('You Lose!');
         this.computerBoard.classList.add('hide');
         this.playerBoard.classList.add('hide');
         this.restartButton.classList.add('hide');
         this.playButton.classList.remove('hide');
-        this.playButton.innerHTML = 'Play Again'
-        return
+        this.playButton.innerHTML = 'Play Again';
+        return;
       }
-    }, 500)
+    }, 500);
   }
 }
-
-
-
 
 function renderBoard(gameboard, boardElement) {
   boardElement.innerHTML = '';
@@ -110,14 +111,13 @@ function renderBoard(gameboard, boardElement) {
         cell.classList.add('miss');
       } else if (cellState === 'hit') {
         cell.classList.add('hit');
-    }
-      else if (typeof cellState === 'object' && cellState !== null) {
+      } else if (typeof cellState === 'object' && cellState !== null) {
         cell.classList.add('ship');
       }
 
-      boardElement.appendChild(cell)
-      }
+      boardElement.appendChild(cell);
+    }
   }
 }
 
-export { renderBoard, EventListeners};
+export { renderBoard, EventListeners };
