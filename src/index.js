@@ -20,6 +20,7 @@ class Gameboard {
   constructor() {
     this.board = this.createBoard();
     this.ships = [];
+    this.originalShipPlacement = [];
   }
 
   createBoard() {
@@ -60,7 +61,30 @@ class Gameboard {
       }
     }
     this.ships.push(ship);
+    this.originalShipPlacement.push({ ship, x, y, isHorizontal });
     return true;
+  }
+  
+
+  reset() {
+    // 1. Reset all ships' hit counters to 0
+    this.ships.forEach((ship) => {
+      ship.numHit = 0;
+    });
+
+    // 2. Create a new, clean board grid
+    this.board = this.createBoard();
+
+    // 3. Re-place all the ships using the saved placement data
+    this.originalShipPlacement.forEach(({ ship, x, y, isHorizontal }) => {
+      for (let i = 0; i < ship.length; i++) {
+        if (isHorizontal) {
+          this.board[y][x + i] = ship;
+        } else {
+          this.board[y + i][x] = ship;
+        }
+      }
+    });
   }
 
   receiveAttack(x, y) {
